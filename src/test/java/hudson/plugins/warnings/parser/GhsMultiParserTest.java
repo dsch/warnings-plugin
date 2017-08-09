@@ -33,18 +33,42 @@ public class GhsMultiParserTest extends ParserTester {
         FileAnnotation annotation = iterator.next();
         checkWarning(annotation, 37,
                 "transfer of control bypasses initialization of:\n            variable \"CF_TRY_FLAG\" (declared at line 42)\n            variable \"CF_EXCEPTION_NOT_CAUGHT\" (declared at line 42)\n        CF_TRY_CHECK_EX(ex2);",
-                "/maindir/tests/TestCase_0101.cpp\"", TYPE, "#546-D",
+                "./maindir/tests/TestCase_0101.cpp", TYPE, "#546-D",
                 Priority.NORMAL);
         annotation = iterator.next();
         checkWarning(annotation, 29,
                 "label\n          \"CF_TRY_LABELex1\" was declared but never referenced\n     CF_TRY_EX(ex1)",
-                "/maindir/tests/TestCase_0101.cpp\"", TYPE, "#177-D",
+                "./maindir/tests/TestCase_0101.cpp", TYPE, "#177-D",
                 Priority.NORMAL);
         annotation = iterator.next();
         checkWarning(annotation, 9,
                 "extra\n          \";\" ignored\n  TEST_DSS( CHECK_4TH_CONFIG_DATA, 18, 142, 'F');",
-                "/maindir/tests/TestCase_1601.cpp\"", TYPE, "#381-D",
+                "./maindir/tests/TestCase_1601.cpp", TYPE, "#381-D",
                 Priority.NORMAL);
+    }
+
+    @Test
+    public void parseWrap() throws IOException {
+        Collection<FileAnnotation> warnings = new GhsMultiParser().parse(openFile("ghsmulti_wrap.txt"));
+
+        assertEquals(WRONG_NUMBER_OF_WARNINGS_DETECTED, 3, warnings.size());
+
+        Iterator<FileAnnotation> iterator = warnings.iterator();
+        FileAnnotation annotation = iterator.next();
+        checkWarning(annotation, 66,
+                "variable \"ap\" was declared but never referenced\n" +
+                        "                              const os_appcontext_t *ap = &OS_appTableBase[a];",
+                "C:/MyWork/kernel/kern-initappdata.c", TYPE,"#177-D", Priority.NORMAL);
+        annotation = iterator.next();
+        checkWarning(annotation, 77,
+                "variable \"tp\" was declared but never referenced\n" +
+                        "                              const os_task_t *tp = &OS_taskTableBase[t];",
+                "C:/MyWork/kernel/kern-initappdata.c", TYPE, "#177-D", Priority.NORMAL);
+        annotation = iterator.next();
+        checkWarning(annotation, 88,
+                "nonstandard type for a bitfield\n" +
+                        "                              char i:3;",
+                "C:/MyWork/x.c", TYPE, "#230", Priority.HIGH);
     }
 
     @Override

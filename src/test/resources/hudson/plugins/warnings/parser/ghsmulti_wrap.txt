@@ -1,0 +1,14 @@
+"C:/MyWork/kernel/kern-initappdata.c", line 66: warning #177-D:
+          variable "ap" was declared but never referenced
+                              const os_appcontext_t *ap = &OS_appTableBase[a];
+                                                     ^
+
+"C:/MyWork/kernel/kern-initappdata.c", line 77: warning #177-D:
+          variable "tp" was declared but never referenced
+                              const os_task_t *tp = &OS_taskTableBase[t];
+                                               ^
+
+"C:/MyWork/x.c", line 88: error #230:
+          nonstandard type for a bitfield
+                              char i:3;
+                              ^
